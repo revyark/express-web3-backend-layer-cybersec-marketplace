@@ -67,7 +67,7 @@ export async function submitUserReport(url, userWallet) {
 
     const tx2= await rewards.methods
         .registerReport(userWallet,evidenceHash)
-        .send({ from: account.address, gas: 300000 });
+        .send({ from: account.address });
     console.log("✅ User report confirmed!");
     console.log("   Tx Hash:", tx.transactionHash);
     console.log("   Block Number:", tx.blockNumber);
@@ -108,12 +108,33 @@ export async function getReports() {
 }
 
 export async function verifyReport(reportId) {
-    const tx = await contract.methods
-        .setReportStatus(reportId, 1) // 1 = Verified
-        .send({ from: account.address, gas: 100000 });
+    // 1️⃣ Get report from Marketplace
+    const report = await marketplace.methods.getReport(reportId).call();
+    const url = report.domain;
+    const accusedWallet = report.accusedWallet;
+
+    // 2️⃣ Generate consistent evidenceHash (same as submitUserReport)
+    // JS: consistent evidence hash for both functions
+    const evidenceHash = web3.utils.padRight(web3.utils.asciiToHex(url), 64);
+
+    console.log("Contract owner:", await marketplace.methods.owner().call());
+    console.log("Backend wallet:", account.address);
+    console.log("Report URL:", url);
+    console.log("Accused Wallet:", accusedWallet);
+    console.log("Evidence Hash:", evidenceHash);
+
+    // 3️⃣ Flag threat → bans domain & wallet (if exists) + rewards reporters
+    const reason = "Verified by admin";
+    const tx = await rewards.methods
+        .flagThreat(accusedWallet, url, evidenceHash, reason)
+        .send({ from: account.address });
+
+    console.log("🚫 URL & Wallet flagged successfully");
+    console.log("Tx Hash:", tx.transactionHash);
 
     return {
         message: `Report ${reportId} marked as Verified`,
         txHash: tx.transactionHash
     };
 }
+

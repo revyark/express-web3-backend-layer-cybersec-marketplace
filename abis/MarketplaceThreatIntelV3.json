@@ -350,6 +350,32 @@
       "type": "function"
     },
     {
+      "inputs": [],
+      "name": "rewardsContract",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_rewards",
+          "type": "address"
+        }
+      ],
+      "name": "setRewardsContract",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
       "inputs": [
         {
           "internalType": "string",

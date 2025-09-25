@@ -5,7 +5,15 @@
     "express": "^5.1.0",
     "mongodb": "^6.20.0",
     "node-fetch": "^3.3.2",
-    "web3": "^4.16.0"
+    "web3": "^4.16.0",
+    "bcrypt": "^6.0.0",
+    "cookie-parser": "^1.4.7",
+    "fs": "^0.0.1-security",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.5",
+    "mongoose-aggregate-paginate-v2": "^1.1.4",
+    "multer": "^2.0.2",
+    "pinata":"^2.5.0"
   },
   "scripts": {
     "start": "node index.js"
